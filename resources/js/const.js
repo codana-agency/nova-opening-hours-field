@@ -17,3 +17,10 @@ export const EMPTY_WEEK = {
     saturday: [],
     sunday: [],
 }
+// @todo: or?
+// export const WEEK_DAYS = Object.keys(EMPTY_WEEK)
+
+export const editableProp = {
+    type: Boolean,
+    default: false,
+}

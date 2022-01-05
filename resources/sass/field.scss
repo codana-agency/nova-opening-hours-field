@@ -1,7 +1,9 @@
 // Nova Tool CSS
 
-.openingHours.weekTable {
-    .interval {
-        margin: 10px 0;
+.openingHours {
+    &.weekTable, &.exceptionsTable {
+        .interval {
+            margin: 10px 0;
+        }
     }
 }
