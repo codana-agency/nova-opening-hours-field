@@ -1,59 +1,24 @@
-import {EMPTY_WEEK, WEEK_DAYS} from "./const"
+import {EMPTY_WEEK} from "./const";
 
-export function getOpeningHoursData(openingHoursData) {
+export function getFieldData(openingHoursData) {
     return {
-        openingHours: getOpeningHoursWeekData(openingHoursData),
-        exceptions: getOpeningHoursExceptionsData(openingHoursData),
+        week: getWeekData(openingHoursData),
+        exceptions: getExceptionsData(openingHoursData),
     }
 }
 
-export function getOpeningHoursWeekData(openingHoursData) {
+export function getWeekData(openingHoursData) {
     return {
         ...EMPTY_WEEK,
-        ..._.pick(openingHoursData, WEEK_DAYS),
+        ..._.pick(openingHoursData, Object.keys(EMPTY_WEEK)),
     }
 }
 
-function getOpeningHoursExceptionsData(openingHoursData) {
-    return (openingHoursData && openingHoursData['exceptions']) || []
+function getExceptionsData(openingHoursData) {
+    return openingHoursData && openingHoursData['exceptions']
+        ? Object.keys(openingHoursData['exceptions']).length ? openingHoursData['exceptions'] : {}
+        : {}
 }
-
-// export function getOpeningHoursWeekData1(openingHoursData) {
-//     return _.map(
-//         WEEK_DAYS, (day) => {
-//             return {
-//                 day: openingHoursData[day],
-//             }
-//
-//             return {
-//                 day: day,
-//                 intervals: openingHoursData[day],
-//                 // intervals: _.map(
-//                 //     openingHoursData[day],
-//                 //     (interval) => {
-//                 //         let _interval = interval.toString().split('-')
-//                 //         return {
-//                 //             from: _interval[0],
-//                 //             to: _interval[1],
-//                 //         }
-//                 //     }),
-//                 // intervals: mapIntervals(openingHoursData[day]),
-//             }
-//         }
-//     )
-// }
-//
-// function mapIntervals(intervals) {
-//     return _.map(
-//         intervals,
-//         (interval) => {
-//             let _interval = interval.toString().split('-')
-//             return {
-//                 from: _interval[0],
-//                 to: _interval[1],
-//             }
-//         })
-// }
 
 export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.substr(1).toLowerCase()
@@ -74,13 +39,3 @@ export function getRandomTimeInterval() {
 
     return padZeroFn(fromHour) + ':00-' + padZeroFn(toHour) + ':00'
 }
-
-// @todo: const or here?
-// export function editableProps() {
-//     return {
-//         editable: {
-//             type: Boolean,
-//             default: false,
-//         }
-//     }
-// }

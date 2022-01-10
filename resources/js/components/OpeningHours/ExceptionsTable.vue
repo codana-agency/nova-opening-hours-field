@@ -11,6 +11,7 @@
                 <div v-if="editable">
                     <input class="form-control form-input form-input-bordered"
                            :value="date"
+                           pattern="([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$|(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$"
                            @change="changeExceptionName"
                            required
                     >
@@ -23,7 +24,7 @@
                         <div v-if="editable">
                             <input class="form-control form-input form-input-bordered"
                                    v-model="exceptions[date][index]"
-                                   pattern="^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])-(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$"
+                                   pattern="(([0-1][0-9]|2[0-3]):[0-5][0-9])-(([0-1][0-9]|2[0-3]):([0-5][0-9])|24:00)"
                                    required
                             >
                             <button class="btn btn-default btn-danger" @click.prevent="removeInterval(date, index)">-</button>
@@ -62,6 +63,7 @@ export default {
 
         changeExceptionName(event) {
             let exception = this.exceptions[event.target._value]
+
             this.$delete(this.exceptions, event.target._value)
             this.$set(this.exceptions, event.target.value, exception)
         },
@@ -69,6 +71,7 @@ export default {
         addInterval(date) {
             let intervals = this.exceptions[date] || []
             intervals.push(getRandomTimeInterval())
+
             this.exceptions[date] = intervals
         },
 

@@ -12,11 +12,16 @@ class NovaOpeningHoursField extends Field
 {
     public $component = 'nova-opening-hours-field';
 
+    private $allowOverflowMidnight;
+//    private $allowMergeOverlapping;
+
     public function __construct($name, $attribute = null, $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
 
-        $this->allowExceptions();
+        $this->allowExceptions(TRUE);
+        $this->allowOverflowMidnight(FALSE);
+//        $this->allowMergeOverlapping(TRUE);
     }
 
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -24,8 +29,16 @@ class NovaOpeningHoursField extends Field
         if ($request->exists($requestAttribute)) {
             $value = json_decode($request[$requestAttribute], TRUE);
 
+            $data = array_merge([
+                'overflow' => (bool)$this->allowOverflowMidnight,
+            ], $value);
+
+//            if ($this->allowMergeOverlapping) {
+//                $data = OpeningHours::mergeOverlappingRanges($data);
+//            }
+
             try {
-                OpeningHours::create($value);
+                OpeningHours::create($data);
             } catch (OpeningHoursException $exception) {
                 throw ValidationException::withMessages([$requestAttribute => $exception->getMessage()]);
             }
@@ -34,8 +47,20 @@ class NovaOpeningHoursField extends Field
         }
     }
 
-    public function allowExceptions(bool $allowExceptions = TRUE)
+    public function allowExceptions(bool $allowExceptions)
     {
         return $this->withMeta(['allowExceptions' => $allowExceptions]);
     }
+
+    public function allowOverflowMidnight(bool $allowOverflowMidnight)
+    {
+        $this->allowOverflowMidnight = $allowOverflowMidnight;
+        return $this->withMeta(['allowOverflowMidnight' => $this->allowOverflowMidnight]);
+    }
+
+//    public function allowMergeOverlapping(bool $allowMergeOverlapping)
+//    {
+//        $this->allowMergeOverlapping = $allowMergeOverlapping;
+//        return $this->withMeta(['allowMergeOverlapping' => $this->allowMergeOverlapping]);
+//    }
 }

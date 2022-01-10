@@ -1,7 +1,7 @@
 <template>
     <panel-item :field="field">
         <template slot="value">
-            <week-table :opening-hours="openingHours"/>
+            <week-table :week="week"/>
             <exceptions-table v-if="field.allowExceptions" :exceptions="exceptions"/>
         </template>
     </panel-item>
@@ -10,7 +10,7 @@
 <script>
 import WeekTable from "../OpeningHours/WeekTable";
 import ExceptionsTable from "../OpeningHours/ExceptionsTable";
-import {getOpeningHoursData} from "../../func";
+import {getFieldData} from "../../func";
 
 export default {
     components: {WeekTable, ExceptionsTable},
@@ -19,7 +19,7 @@ export default {
 
     data: function () {
         return {
-            ...getOpeningHoursData(this.field.value)
+            ...getFieldData(this.field.value)
         }
     },
 }

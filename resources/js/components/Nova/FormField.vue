@@ -1,7 +1,7 @@
 <template>
     <default-field :field="field" :errors="errors">
         <template slot="field">
-            <week-table :opening-hours="openingHours" :editable="true"/>
+            <week-table :week="week" :editable="true"/>
             <exceptions-table v-if="field.allowExceptions" :exceptions="exceptions" :editable="true"/>
         </template>
     </default-field>
@@ -9,9 +9,9 @@
 
 <script>
 import {FormField, HandlesValidationErrors} from 'laravel-nova'
-import WeekTable from "../OpeningHours/WeekTable"
-import ExceptionsTable from "../OpeningHours/ExceptionsTable"
-import {getOpeningHoursData} from "../../func"
+import WeekTable from "../OpeningHours/WeekTable";
+import ExceptionsTable from "../OpeningHours/ExceptionsTable";
+import {getFieldData} from "../../func";
 
 export default {
     components: {WeekTable, ExceptionsTable},
@@ -22,7 +22,7 @@ export default {
 
     data: function () {
         return {
-            ...getOpeningHoursData(this.field.value),
+            ...getFieldData(this.field.value),
         }
     },
 
@@ -31,7 +31,7 @@ export default {
             formData.set(
                 this.field.attribute,
                 JSON.stringify({
-                    ...this.openingHours,
+                    ...this.week,
                     exceptions: this.exceptions,
                 })
             )

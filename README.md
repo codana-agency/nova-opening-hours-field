@@ -32,7 +32,7 @@ composer require sadekd/nova-opening-hours-field
 Laravel Migration
 
 ```php
-$table->json('opening_hours');
+$table->json('opening_hours')->nullable();
 ```
 
 
@@ -47,7 +47,7 @@ protected $casts = [
 Nova Resource
 
 ```php
-NovaOpeningHoursField::make('opening_hours'),
+NovaOpeningHoursField::make(__('Opening Hours'), 'opening_hours'),
 ```
 
 ## TODO
