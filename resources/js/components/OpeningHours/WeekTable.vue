@@ -6,15 +6,14 @@
         <tr v-for="(intervals, day) in week">
             <td>{{ translateDayName(day) }}</td>
             <td>
-                <div v-if="intervals.length">
+                <div v-if="Object.values(intervals).length">
                     <div v-for="(interval, index) in intervals" class="interval">
                         <div v-if="editable">
-                            <input class="form-control form-input form-input-bordered"
-                                   v-model="intervals[index]"
-                                   pattern="(([0-1][0-9]|2[0-3]):[0-5][0-9])-(([0-1][0-9]|2[0-3]):([0-5][0-9])|24:00)"
-                                   required
-                            >
-                            <button class="btn btn-default btn-danger" @click.prevent="removeInterval(day, index)">-</button>
+                            <interval-input
+                                :input-value="intervals[index]"
+                                @input="intervals[index] = $event"
+                                @removeInterval="removeInterval(day, index)"
+                            />
                         </div>
                         <div v-else>{{ interval }}</div>
                     </div>
@@ -23,7 +22,7 @@
             </td>
             <td v-if="editable">
                 <button class="btn btn-default btn-primary" @click.prevent="addInterval(day)">+</button>
-                <button class="btn btn-default btn-danger" v-if="intervals.length" @click.prevent="removeAllIntervals(day)">-</button>
+                <button class="btn btn-default btn-danger" v-if="Object.values(intervals).length" @click.prevent="removeAllIntervals(day)">-</button>
             </td>
         </tr>
     </table>
@@ -32,8 +31,11 @@
 <script>
 import {capitalizeFirstLetter, getRandomTimeInterval} from "../../func";
 import {editableProp} from "../../const";
+import IntervalInput from "./IntervalInput";
 
 export default {
+    components: { IntervalInput },
+
     props: {
         week: Object,
         editable: editableProp,
@@ -45,6 +47,7 @@ export default {
         },
 
         addInterval(day) {
+            console.log(this.week)
             let openingHoursForDay = this.week[day] || []
             openingHoursForDay.push(getRandomTimeInterval())
 

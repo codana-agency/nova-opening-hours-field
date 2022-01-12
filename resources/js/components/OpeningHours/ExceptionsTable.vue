@@ -9,25 +9,26 @@
         <tr v-for="(intervals, date) in exceptions">
             <td>
                 <div v-if="editable">
-                    <input class="form-control form-input form-input-bordered"
-                           :value="date"
-                           pattern="([0-9]{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$|(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$"
-                           @change="changeExceptionName"
-                           required
+                    <input
+                        type="date"
+                        class="form-control form-input form-input-bordered"
+                        :value="date"
+                        :min="new Date().toISOString().slice(0, 10)"
+                        @change="changeExceptionName"
+                        required
                     >
                 </div>
                 <div v-else>{{ date }}</div>
             </td>
             <td>
-                <div v-if="intervals.length">
+                <div v-if="Object.values(intervals).length">
                     <div v-for="(interval, index) in intervals" class="interval">
                         <div v-if="editable">
-                            <input class="form-control form-input form-input-bordered"
-                                   v-model="exceptions[date][index]"
-                                   pattern="(([0-1][0-9]|2[0-3]):[0-5][0-9])-(([0-1][0-9]|2[0-3]):([0-5][0-9])|24:00)"
-                                   required
-                            >
-                            <button class="btn btn-default btn-danger" @click.prevent="removeInterval(date, index)">-</button>
+                            <interval-input
+                                :input-value="interval"
+                                @input="exceptions[date][index] = $event"
+                                @removeInterval="removeInterval(date, index)"
+                            />
                         </div>
                         <div v-else>{{ interval }}</div>
                     </div>
@@ -45,8 +46,11 @@
 <script>
 import {editableProp} from "../../const"
 import {getRandomDate, getRandomTimeInterval} from "../../func"
+import IntervalInput from "./IntervalInput";
 
 export default {
+    components: { IntervalInput },
+
     props: {
         exceptions: Object,
         editable: editableProp,

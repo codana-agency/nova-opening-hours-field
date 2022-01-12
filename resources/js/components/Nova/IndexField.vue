@@ -1,6 +1,6 @@
 <template>
     <div :class="`text-${field.textAlign}`">
-        <boolean-icon v-for="(intervals, day) in week" :key="day" :value="intervals.length"/>
+        <boolean-icon v-for="(intervals, day) in week" :key="day" :value="Object.values(intervals).length"/>
     </div>
 </template>
 

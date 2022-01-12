@@ -2,7 +2,7 @@
     <panel-item :field="field">
         <template slot="value">
             <week-table :week="week"/>
-            <exceptions-table v-if="field.allowExceptions" :exceptions="exceptions"/>
+            <exceptions-table v-if="field.allowExceptions && Object.keys(exceptions).length" :exceptions="exceptions"/>
         </template>
     </panel-item>
 </template>
