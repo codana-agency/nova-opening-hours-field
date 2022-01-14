@@ -37,10 +37,7 @@ export default {
         },
 
         addInterval(dayName) {
-            let openingHoursForDay = this.openingHours[dayName] || []
-            openingHoursForDay.push("08:00-16:00")
-
-            this.openingHours[dayName] = openingHoursForDay
+            this.$emit('addInterval', dayName);
         },
 
         removeInterval(dayName, index) {

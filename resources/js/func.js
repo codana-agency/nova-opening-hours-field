@@ -5,7 +5,7 @@ export function getOpeningHoursData(openingHoursData) {
         openingHours: {
             ...EMPTY_WEEK,
             ..._.pick(openingHoursData, WEEK_DAYS),
-        },
+        }
     }
 }
 
