@@ -18,7 +18,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Codana\\NovaOpeningHoursField\\FieldServiceProvider"
+                "SadekD\\NovaOpeningHoursField\\FieldServiceProvider"
             ]
         }
     }
