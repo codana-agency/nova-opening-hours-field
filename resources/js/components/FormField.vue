@@ -41,7 +41,7 @@ export default {
 
         addInterval(dayName){
             let openingHoursForDay = [...this.openingHours[dayName]] || []
-            openingHoursForDay.push("08:00-16:00")
+            openingHoursForDay.push(this.field.extraAttributes.placeholder)
             this.openingHours[dayName] = openingHoursForDay
         }
     },
